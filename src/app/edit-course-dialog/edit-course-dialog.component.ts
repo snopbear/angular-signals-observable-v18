@@ -12,7 +12,7 @@ import { LoadingIndicatorComponent } from '../loading/loading.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CourseCategory } from '../models/course-category.model';
 import { CourseCategoryComboboxComponent } from '../course-category-combobox/course-category-combobox.component';
-import { firstValueFrom } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Component({
@@ -104,14 +104,28 @@ export class EditCourseDialogComponent {
 export function openEditCourseDialog(
   dialog: MatDialog,
   data: EditCourseDialogData
-): Promise<any> {
+): Observable<any> {
   const config = new MatDialogConfig();
   config.disableClose = true;
   config.autoFocus = true;
   config.width = '400px';
   config.data = data;
 
-  const close$ = dialog.open(EditCourseDialogComponent, config).afterClosed();
-
-  return firstValueFrom(close$);
+  const dialogRef = dialog.open(EditCourseDialogComponent, config);
+  return dialogRef.afterClosed();
 }
+
+// export function openEditCourseDialog(
+//   dialog: MatDialog,
+//   data: EditCourseDialogData
+// ): Promise<any> {
+//   const config = new MatDialogConfig();
+//   config.disableClose = true;
+//   config.autoFocus = true;
+//   config.width = '400px';
+//   config.data = data;
+
+//   const close$ = dialog.open(EditCourseDialogComponent, config).afterClosed();
+
+//   return firstValueFrom(close$);
+// }

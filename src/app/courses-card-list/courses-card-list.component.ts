@@ -20,19 +20,33 @@ export class CoursesCardListComponent {
 
   dialog = inject(MatDialog);
 
-  async onEditCourse(course: Course) {
-    const newCourse = await openEditCourseDialog(this.dialog, {
+  // async onEditCourse(course: Course) {
+  //   const newCourse = await openEditCourseDialog(this.dialog, {
+  //     mode: 'update',
+  //     title: 'Update Existing Course',
+  //     course,
+  //   });
+  //   if (!newCourse) {
+  //     return;
+  //   }
+  //   console.log(`Course edited:`, newCourse);
+  //   this.courseUpdated.emit(newCourse);
+  // }
+
+  onEditCourse(course: Course) {
+    openEditCourseDialog(this.dialog, {
       mode: 'update',
       title: 'Update Existing Course',
       course,
+    }).subscribe((newCourse) => {
+      if (!newCourse) {
+        return;
+      }
+      console.log(`Course edited:`, newCourse);
+      this.courseUpdated.emit(newCourse);
     });
-    if (!newCourse) {
-      return;
-    }
-    console.log(`Course edited:`, newCourse);
-    this.courseUpdated.emit(newCourse);
   }
-
+  
   onCourseDeleted(course: Course) {
     this.courseDeleted.emit(course.id);
   }
