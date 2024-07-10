@@ -26,17 +26,13 @@ import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.c
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-
   #courses = signal<Course[]>([]);
   beginnersList = viewChild<CoursesCardListComponent>('beginnersList');
-
 
   messageService = inject(MessagesService);
   coursesService = inject(CoursesService);
   dialog = inject(MatDialog);
-    injector = inject(Injector);
-
-
+  injector = inject(Injector);
 
   beginnerCourses = computed(() => {
     const courses = this.#courses();
@@ -66,6 +62,8 @@ export class HomeComponent {
       .loadAllCourses()
       .pipe(
         catchError((err) => {
+          this.messageService.showMessage(`Error loading courses!`, 'error');
+
           console.error(err);
           return of([]); // Return an empty array in case of error
         })
@@ -74,8 +72,6 @@ export class HomeComponent {
         this.#courses.set(courses.sort(sortCoursesBySeqNo));
       });
   }
-
-
 
   onCourseUpdated(updatedCourse: Course) {
     const courses = this.#courses();
@@ -117,8 +113,6 @@ export class HomeComponent {
     });
   }
 
-
-
   onToObservableExample() {
     const numbers = signal(0);
     numbers.set(1);
@@ -133,8 +127,6 @@ export class HomeComponent {
     });
     numbers.set(5);
   }
-
-
 
   onToSignalExample() {
     try {
