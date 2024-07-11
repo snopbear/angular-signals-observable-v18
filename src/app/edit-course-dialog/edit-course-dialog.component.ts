@@ -36,12 +36,12 @@ export class EditCourseDialogComponent {
   form = this.fb.group({
     title: [''],
     longDescription: [''],
-    iconUrl: [''],
-    category: [''],
+    iconUrl: ['']
   });
 
   courseService = inject(CoursesService);
 
+  // signal emitted CourseCategory with initial value of BEGINNER
   category = signal<CourseCategory>('BEGINNER');
 
   constructor() {
